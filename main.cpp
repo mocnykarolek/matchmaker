@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "string.h"
 #define MAX_INT 2147483647
+
 struct edge;
 
 struct vertex{
@@ -176,15 +177,11 @@ matrixData create_matrix(vertex* vertices, int vertices_number){
 
     for (int y = 0; y < winner_count; y++)
     {
-        matrix[y] = (int*)malloc(sizeof(int)* winner_count);
-        for (int x = 0; x < winner_count; x++)
-        {
-            matrix[y][x] = 0;
-        }
-        
+        matrix[y] = (int*)calloc(winner_count, sizeof(int));
+          
     }
-    int* x_map = (int*)malloc(sizeof(int)* (vertices_number+1));
-    int* y_map = (int*)malloc(sizeof(int)* (vertices_number+1));
+    int* x_map = (int*)calloc((vertices_number+1),sizeof(int));
+    int* y_map = (int*)calloc((vertices_number+1),sizeof(int));
 
     int x_last_index = 0;
     int y_last_index = 0;
@@ -208,6 +205,7 @@ matrixData create_matrix(vertex* vertices, int vertices_number){
             edge* edges = vertices[y].relations;
             while(edges != nullptr){
                 int number = edges->neighbour->number;
+                if(vertices[number-1].color != vertices[y].color)
                 matrix[y_map[vertices[y].number]][x_map[number]] = edges->matchness;
 
                 edges = edges->next;
@@ -235,7 +233,7 @@ matrixData create_matrix(vertex* vertices, int vertices_number){
 
 
 bool dfs_graph(int** matrix,int* x_val, int* y_val, int*con_x,int*con_y, int size, int x_vertex, bool* visited_x, bool*visited_y, int* calculated_values){
-
+    // printf("Wchodze do DFS: x_vertex = %d\n", x_vertex);
     visited_x[x_vertex] = true;
 
     for (int y = 0; y < size; y++)
@@ -306,9 +304,9 @@ void hungarian_algorithm(matrixData md){
     bool *visited_x = (bool*)malloc(sizeof(bool)*size);
     bool *visited_y = (bool*)malloc(sizeof(bool)*size);
     int *calculated_difference = (int*)malloc(sizeof(int)*size);
-    for (int j = 0; j < size; j++)
-    {
-        
+
+    int j = 0;
+    while(j< size){
         for (int i = 0; i < size; i++)
         {
             visited_x[i] = false;
@@ -333,9 +331,13 @@ void hungarian_algorithm(matrixData md){
                 }
                 
                 
-                j--;
+                
+        }else{
+            j++;
         }
+        
     }
+
 
 
     int total_matching_points = 0;
