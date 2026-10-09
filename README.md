@@ -33,6 +33,22 @@ g++ -std=c++11 matchmaker.cpp -o matchmaker
 ```bash
 ./matchmaker < input.txt
 ```
+## Example input and output data
+INPUT: 
+```
+2
+2 1
+1 2 5
+4 4
+1 3 1
+1 4 4
+2 3 3
+2 4 2
+```
+OUTPUT:
+```
+5 7
+```
 
 The program reads the number of test cases, followed by the number of vertices, edges, and weighted edge definitions for each case.
 
